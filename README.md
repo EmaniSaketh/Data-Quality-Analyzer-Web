@@ -5,7 +5,7 @@
 
 # Data Quality Analyzer
 
-Scans a `data/` folder, automatically profiles every CSV and Excel file it finds, and outputs a self-contained HTML report per sheet with statistics, missing-value analysis, correlations, and data-quality alerts.
+Automatically profiles CSV and Excel files and outputs a self-contained HTML report per sheet with statistics, missing-value analysis, correlations, and data-quality alerts. Run it as a command-line tool against files in `data/`, or use the web app to upload a file and download its reports.
 
 Key features:
 
@@ -41,6 +41,21 @@ pip install -r requirements.txt
 
 ## Usage
 
+New here? Follow the [step-by-step local setup guide](RUN-LOCALLY.md) to run the
+upload website on your own computer.
+
+### Web app
+
+Run the upload website locally:
+
+```bash
+streamlit run app.py
+```
+
+Open the local URL printed in the terminal, upload one CSV or Excel file, and download the generated report(s). The web app accepts files up to 50 MB. A temporary working copy is removed after analysis; the original upload and generated reports may remain in the app session's memory until that session ends. When hosted, uploads and reports are processed in the hosting provider's environment. Do not upload confidential or sensitive data unless you are authorized to send it there.
+
+### Command line
+
 ```bash
 # Spanish report (default)
 python data_quality_analyzer.py
@@ -60,6 +75,17 @@ python data_quality_analyzer.py --sample 100000
 # Fast mode â€” skips correlations and interactions
 python data_quality_analyzer.py --minimal
 ```
+
+## Deploying the web app
+
+The web interface can be deployed using [Streamlit Community Cloud](https://share.streamlit.io/):
+
+1. Push this project to a GitHub repository. The input `data/`, generated `reports/`, and `logs/` folders are excluded from Git; uploaded datasets do not need to be committed.
+2. Sign in to Streamlit Community Cloud and choose **Create app**.
+3. Select the repository and branch, set the main file path to `app.py`, and choose Python 3.11 in the advanced settings.
+4. Deploy. Streamlit will install the dependencies from `requirements.txt` and provide an app URL.
+
+Anyone who can access the deployed app can upload files, so only publish it for data you are permitted to process on the hosting service. The app does not provide user accounts or access control.
 
 ## How it works
 
